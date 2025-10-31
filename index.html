@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Music Loop</title>
+  <link rel='icon' href='data:;base64,='>
+  <script defer src="app.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+  /* hide scrollbar */
+/* For Firefox */
+* {
+  scrollbar-width: none; /* hides scrollbar */
+  -ms-overflow-style: none; /* IE/Edge */
+}
+
+/* hide scrollbar */
+/* For Chrome, Edge, Safari */
+::-webkit-scrollbar {
+  width: 0px;
+  height: 0px;
+}
+
+  html{
+    user-select: none;
+  }
+  body {
+  margin: 0;
+  padding: 0;
+  background-image: url('trans.png');
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  height: calc(100vh - 100px);
+  width: 100vw;
+  overflow: hidden;
+  position: relative;
+}
+
+  li {
+    background: #fff;
+    transition: background 0.3s ease;
+  }
+
+
+#fileList {
+  z-index: 50;
+  overflow-y: auto;
+  max-height: 600px;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+/* Hide scrollbars only on this element */
+#fileList::-webkit-scrollbar {
+  width: 0px;
+}
+
+#info{
+  position: absolute;
+  bottom: 18px;
+  left: 20px;
+}
+#info img{
+  height: 21px;
+  width: 21px;
+  fill: black;
+}
+#info span{
+  font-weight: bold;
+}
+
+#infoText.visible {
+  transform: translateX(0);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+#infoText {
+  transform: translateX(-10px);
+  opacity: 0;
+  pointer-events: none;
+}
+
+
+
+  </style>
+</head>
+<body class="bg-gray-100 relative">
+
+<div class="absolute w-full flex justify-between items-start gap-6 px-0">
+
+  <!-- Left side: -->
+  <div class="flex-1 max-w-lg p-4 bg-transparent rounded-xl">
+    <ul id="fileList" class="text-left space-y-2 text-sm"></ul>
+  </div>
+
+  <!-- Right side: -->
+<div class="mt-3 px-3 pt-0 flex flex-col items-end justify-between min-h-screen">
+    <div id="dropzone" class="bg-[#f3f4f6] border-2 border-dashed border-gray-400 py-2 px-4 md:py-12 md:px-12 rounded-lg text-gray-500 hover:border-green-600 hover:bg-green-100 cursor-pointer transition-all mb-4 w-fit text-center">
+      Click or drop MP3 files here
+    </div>
+    
+<div class="flex flex-col">
+      <div class="font-bold tracking-[2px text-red-600 flex justify-end mb-3 mr-4">
+        Music Loop
+      </div>
+
+    <div class="flex mb-8">
+      <div class="flex items-center mr-2">
+        <label class="text-sm mr-1" for="reverseToggle" style="cursor:pointer;"  tabindex="-1">Reverse</label>
+        <input type="checkbox" id="reverseToggle" tabindex="-1" />
+      </div>
+        
+        <button id="playPauseBtn" class="mr-2 w-24 px-6 py-2 bg-green-600 text-white rounded-full hover:bg-green-700 transition" tabindex="-1">Play</button>
+    </div>
+</div>  
+<!-- \right side -->
+</div>
+
+
+
+<!-- info pop out bubble -->
+  <div id="info" class="inline-block">
+    <img src="info.svg" alt="Information" class="cursor-pointer" />
+    <div id="infoText" class="absolute left-full -top-16 w-[400px] ml-2 bg-green-600 text-white pl-2 transition-all duration-300 transform translate-x-0 opacity-0 pointer-events-none">
+      <p class="py-0.5"><span>Spacebar</span> to play and pause</p>
+      <p class="py-0.5"><span>Enter key</span> to reverse play order</p>
+      <p class="py-0.5">Click a <span>track title</span> to <span>edit text</span> (whilst music paused)</p>
+    </div>
+  </div>
+
+<!--  -->
+<!--  -->
+<!--  -->
+<!-- \container  -->
+</div>
+
+<script>
+const timeoutDuration = 15000
+
+// click i svg icon to toggle info box
+document.getElementById('info').addEventListener('click', () => {
+  const infoText = document.getElementById('infoText');
+  infoText.classList.toggle('visible');
+
+  setTimeout(() => {
+    infoText.classList.toggle('visible');
+  }, timeoutDuration);
+});
+
+
+// use 'i' key on keyboard to toggle info box
+let infoTimeout;
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'i' || e.key === 'I') {
+    const infoText = document.getElementById('infoText');
+    infoText.classList.toggle('visible');
+
+    clearTimeout(infoTimeout);
+    infoTimeout = setTimeout(() => {
+      infoText.classList.remove('visible');
+    }, timeoutDuration);
+  }
+});
+
+</script>
+</body>
+</html>
